@@ -1,7 +1,7 @@
 # Personalized!
 
 # Grab the current date (%D) and time (%T) wrapped in {}: {%D %T}
-DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg_bold[yellow]%}%D{%Y-%m-%d} %T%{$fg[white]%}}%{$reset_color%}"
+DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg_bold[green]%}%D{%Y-%m-%d} %T%{$fg[white]%}}%{$reset_color%}"
 # Grab the current version of ruby in use (via RVM): [ruby-1.8.7]
 if [ -e ~/.rvm/bin/rvm-prompt ]; then
   DALLAS_CURRENT_RUBY_="%{$fg[white]%}[%{$fg_bold[yellow]%}\$(~/.rvm/bin/rvm-prompt i v)%{$fg[white]%}]%{$reset_color%}"
