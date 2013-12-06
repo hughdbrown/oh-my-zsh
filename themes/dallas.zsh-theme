@@ -1,15 +1,25 @@
 # Personalized!
 
 # Grab the current date (%D) and time (%T) wrapped in {}: {%D %T}
-DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg_bold[green]%}%D{%Y-%m-%d} %T%{$fg[white]%}}%{$reset_color%}"
+DALLAS_CURRENT_TIME_="%{$fg[white]%}{%{$fg_bold[green]%}%D{%Y-%m-%d} %T%{$reset_color%}%{$fg[white]%}}%{$reset_color%}"
+
+function virtualenv_info {
+    [ $VIRTUAL_ENV ] && echo '['`basename $VIRTUAL_ENV`']'
+}
+
 # Grab the current version of ruby in use (via RVM): [ruby-1.8.7]
-if [ -e ~/.rvm/bin/rvm-prompt ]; then
-  DALLAS_CURRENT_RUBY_="%{$fg[white]%}[%{$fg_bold[yellow]%}\$(~/.rvm/bin/rvm-prompt i v)%{$fg[white]%}]%{$reset_color%}"
-else
-  if which rbenv &> /dev/null; then
-    DALLAS_CURRENT_RUBY_="%{$fg[white]%}[%{$fg_bold[yellow]%}\$(rbenv version | sed -e 's/ (set.*$//')%{$fg[white]%}]%{$reset_color%}"
-  fi
-fi
+function current_ruby {
+    if [ -e ~/.rvm/bin/rvm-prompt ]; then
+        ruby=$(~/.rvm/bin/rvm-prompt i v)
+    elif which rbenv &> /dev/null; then
+        ruby=$(rbenv version | sed -e 's/ (set.*$//')
+    fi
+
+    if [ -n $ruby ]; then
+        echo "%{$fg[white]%}[%{$fg_bold[yellow]%}$ruby%{$reset_color%}%{$fg[white]%}]%{$reset_color%}"
+    fi
+}
+
 # Grab the current machine name: muscato
 DALLAS_CURRENT_MACH_="%{$fg_bold[green]%}%m%{$fg[white]%}:%{$reset_color%}"
 # Grab the current filepath, use shortcuts: ~/Desktop
@@ -28,10 +38,6 @@ ZSH_THEME_GIT_PROMPT_CLEAN=""
 # Add 3 cyan ✗s if this branch is diiirrrty! Dirty branch!
 ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[cyan]%}✗✗✗"
 
-function virtualenv_info {
-    [ $VIRTUAL_ENV ] && echo '['`basename $VIRTUAL_ENV`']'
-}
-
 # Put it all together!
-PROMPT="$DALLAS_CURRENT_TIME_$DALLAS_CURRENT_RUBY_\$(virtualenv_info)$DALLAS_CURRENT_MACH_$DALLAS_CURRENT_LOCA_ $DALLAS_CURRENT_USER_$DALLAS_PROMPT_CHAR_ "
+PROMPT="$DALLAS_CURRENT_TIME_\$(current_ruby)\$(virtualenv_info)$DALLAS_CURRENT_MACH_$DALLAS_CURRENT_LOCA_ $DALLAS_CURRENT_USER_$DALLAS_PROMPT_CHAR_ "
 
